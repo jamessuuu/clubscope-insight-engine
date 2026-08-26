@@ -1,0 +1,50 @@
+{
+  // ── Why this file looks unusual ──────────────────────────────────────────────────
+  //
+  // `@clubscope/core` publishes TypeScript *source* through its `exports` map, is an ESM
+  // package (`"type": "module"`), and writes `.js` suffixes on its relative imports as the
+  // ESM spec requires. NestJS, by contrast, needs `experimentalDecorators` +
+  // `emitDecoratorMetadata` — the `design:paramtypes` metadata is what makes constructor
+  // injection and `ValidationPipe`'s DTO discovery work at all — and is most reliably run
+  // as CommonJS.
+  //
+  // The resolution: this app compiles core's sources into its own program. TypeScript's
+  // node resolver substitutes `.ts` for a `.js` specifier, so core's ESM import style
+  // resolves at compile time, and the emitted CommonJS `require('./evidence.js')` resolves
+  // at runtime because the emitted sibling really is `evidence.js`. One compiler, one
+  // module system, no bundler, no loader hooks.
+  //
+  // The cost is `rootDir: "../.."`: because inputs span two workspace packages, the output
+  // tree mirrors the monorepo (`dist/apps/api/src/main.js`). That is a deliberate,
+  // visible trade rather than a surprise — see `nest-cli.json`, which points `sourceRoot`
+  // at the same place.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "strict": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    // Vitest transpiles file-by-file via SWC, which cannot see across files. Turning this
+    // on makes `tsc` reject any re-export that only SWC would discover is type-only.
+    "isolatedModules": true,
+
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    "outDir": "dist",
+    "rootDir": "../..",
+    "sourceMap": true,
+    "declaration": false,
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "api/**/*.ts", "test/**/*.ts", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

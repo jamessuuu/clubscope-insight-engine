@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Ink field with the club's champagne accent, matching the header lockup. A bare "C"
+       arc rather than a glyph: it stays legible at 16px, needs no font, and does not lean on
+       a magnifying-glass cliché to say "insight". -->
+  <rect width="32" height="32" rx="7" fill="#131313"/>
+  <path d="M20 9.07A8 8 0 1 0 20 22.93" fill="none" stroke="#c8b588" stroke-width="2.6" stroke-linecap="round"/>
+</svg>

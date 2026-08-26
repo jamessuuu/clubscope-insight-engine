@@ -1,0 +1,21 @@
+{
+  "name": "clubscope-insight-engine",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Concept prototype: grounded AI insights and an acting assistant over private-club data. Independent work by James Lorenz Santos; not affiliated with ClubScope.",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --parallel --filter \"./apps/*\" dev",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "evals": "pnpm --filter @clubscope/core evals"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

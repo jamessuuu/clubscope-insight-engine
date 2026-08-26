@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens lifted from ClubScope's own public stylesheet, so this prototype reads as
+ * a plausible surface of their product rather than a generic dashboard.
+ *
+ * Source: https://clubscope.ai/styles/style.css — champagne #C8B588 is their signature
+ * accent (by a wide margin, the most-used colour on the site), ink #1E1E1E their body
+ * colour, Inter their typeface, 12px their button radius.
+ *
+ * The palette is extended here with the neutral steps and semantic tints a data product
+ * needs and a marketing site never does — chart series, risk bands, table rules. Those are
+ * derived from the champagne/navy pair rather than invented, so the extension still looks
+ * like it belongs to the same house.
+ */
+@theme {
+  /* ── Brand, verbatim from ClubScope ─────────────────────────────────────── */
+  --color-champagne: #c8b588;
+  --color-champagne-hover: #b29a61;
+  --color-champagne-press: #a68955;
+  --color-ink: #1e1e1e;
+  --color-ink-deep: #131313;
+  --color-parchment: #f5f2eb;
+  --color-navy: #113a5d;
+  --color-rule: #dadada;
+  --color-rule-cool: #c7c8cf;
+  --color-positive: #32a66a;
+  --color-negative: #d11616;
+
+  /* ── Derived neutrals ───────────────────────────────────────────────────── */
+  --color-canvas: #fbfaf7;
+  --color-surface: #ffffff;
+  --color-surface-sunk: #f7f5f0;
+  --color-muted: #6b6b6b;
+  --color-faint: #9a9691;
+
+  /* ── Risk bands, tuned to sit beside champagne without shouting ─────────── */
+  --color-risk-low: #4b8f6b;
+  --color-risk-watch: #b8912f;
+  --color-risk-elevated: #c9701f;
+  --color-risk-critical: #b02a2a;
+
+  /* ── Chart series ───────────────────────────────────────────────────────── */
+  --color-series-1: #113a5d;
+  --color-series-2: #c8b588;
+  --color-series-3: #6b8fa8;
+  --color-series-4: #a68955;
+  --color-series-5: #8a9a7b;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --radius-club: 12px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ClubScope uses a champagne focus ring at 2px with 2px offset. Kept exactly. */
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-champagne);
+    outline-offset: 2px;
+  }
+
+  /*
+   * Tabular figures everywhere a number can change between renders. Without this,
+   * proportional digits make a live-updating column jitter, which reads as instability in
+   * exactly the surface that most needs to look trustworthy.
+   */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+@layer components {
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-club);
+  }
+
+  /*
+   * The evidence chip. Every number the system is willing to show is wrapped in one of
+   * these, and clicking it opens the receipt. Underline rather than a button shape: it must
+   * read as part of the sentence, not as a call to action interrupting it.
+   */
+  .chip {
+    display: inline;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 1.5px solid var(--color-champagne);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+    padding: 0 1px;
+  }
+  .chip:hover {
+    background: color-mix(in srgb, var(--color-champagne) 26%, transparent);
+  }
+
+  .chip-blocked {
+    border-bottom-color: var(--color-negative);
+    background: color-mix(in srgb, var(--color-negative) 10%, transparent);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-negative);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

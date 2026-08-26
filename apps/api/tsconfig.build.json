@@ -1,0 +1,6 @@
+{
+  // Build-time view of the program: identical compiler options, minus the tests and the
+  // Vitest config, so nothing test-only is ever emitted into `dist`.
+  "extends": "./tsconfig.json",
+  "exclude": ["node_modules", "dist", "test", "vitest.config.ts", "**/*.spec.ts"]
+}

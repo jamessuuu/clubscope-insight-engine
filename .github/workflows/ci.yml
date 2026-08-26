@@ -1,0 +1,50 @@
+name: CI
+
+# The point of this workflow is that the claims in the README are checked by a machine on
+# every push, not asserted once by hand. In particular `evals` runs here: if the groundedness
+# gate ever stopped catching the poisoned case, the build goes red rather than the site
+# quietly getting less trustworthy.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Unit and integration tests
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      # Runs last and gates the build. Three cases report as skipped because they need a
+      # model API key; they are printed with their reason and are never counted as passing.
+      - name: Eval suite
+        run: pnpm evals
