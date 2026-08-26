@@ -13,3 +13,6 @@ coverage/
 .turbo/
 *.log
 .firm-pro/
+
+.vercel
+.env*

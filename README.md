@@ -2,6 +2,23 @@
 
 **Grounded AI insights and an acting assistant over private-club operations data.**
 
+### ▸ Live: **[clubscope-insight-engine.vercel.app](https://clubscope-insight-engine.vercel.app)**
+
+Fastest way to see the point of it: open [`/reliability`](https://clubscope-insight-engine.vercel.app/reliability),
+scroll to the poisoned case, and watch a fabricated figure get struck through with the
+verifier's recomputation beside it. Then type your own number into the sandbox below it.
+
+You can also hit the gate directly, without opening the site at all:
+
+```bash
+curl -s -X POST https://clubscope-insight-engine.vercel.app/api/verify \
+  -H 'content-type: application/json' \
+  -d '{"narrative":"Dining revenue was $999,999 last quarter."}'
+
+# {"report":{"status":"blocked","checks":[{"written":"$999,999","outcome":"undeclared",
+#   "detail":"figure appears in prose without an evidence citation"}], ...}}
+```
+
 > **Independent concept prototype.** Built by James Lorenz Santos as a discussion artifact for
 > a conversation with [ClubScope](https://clubscope.ai) about their AI App Developer role.
 > Not affiliated with, endorsed by, or connected to ClubScope. Every figure in this
