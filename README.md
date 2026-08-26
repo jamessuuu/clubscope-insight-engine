@@ -155,12 +155,24 @@ apps/web          Next.js App Router UI
 guarantees testable in isolation. Both apps are thin shells over it — so the API and the UI
 can never disagree about what a number means.
 
+## What is deployed, and what is not
+
+The **web app is deployed**; the **NestJS API is not**. It runs locally, is covered by 53
+end-to-end tests, and its OpenAPI document is generated at `/docs` — but it is a second
+Vercel project with its own root directory, and standing that up properly was not worth
+rushing for a discussion artifact. The grounding gate is reachable live regardless, through
+the web app's own `/api/verify` route, which calls the identical verifier in
+`packages/core`.
+
+Both apps are thin shells over the same core, so nothing about the guarantee differs
+between them.
+
 ## Running it
 
 ```bash
 pnpm install
 pnpm dev          # web on :3100, api on :3101 (Swagger at :3101/docs)
-pnpm test         # unit + integration across core, api and web
+pnpm test         # 287 tests across core and api
 pnpm evals        # the eval suite, in the terminal
 ```
 
